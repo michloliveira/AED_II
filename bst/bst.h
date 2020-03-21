@@ -1,7 +1,5 @@
 #ifndef BST_H
 #define BST_H
-#include <stdio.h>
-#include <stdlib.h>
 
 typedef struct no{
     int valor;
@@ -13,10 +11,14 @@ no* inserir(no* r,int valor);
 void preOrder(no* r);
 void inOrder(no* r);
 void posOrder(no* r);
-void maiorElemento(no* r);
-void menorElemento(no* r);
+int maiorElemento(no* r);
+int menorElemento(no* r);
 int max(int a, int b);
 int altura(no* r);
+void remover(no* r,no* aux,int valor);
+void remover_atual(no* ant,no* atual);
+void antecessor(no* r,int valor,int aux);
+void sucessor(no* r,int valor,int aux);
 
 
 #endif

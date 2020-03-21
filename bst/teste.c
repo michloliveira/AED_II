@@ -4,9 +4,10 @@
 
 int main(int argc,char* argv[]){
     no* raiz;
+    no* aux;
     raiz = NULL;
-    
     while(1==1){
+        aux = NULL;
         int opcao;
         scanf("%d",&opcao);
         switch(opcao){
@@ -28,14 +29,23 @@ int main(int argc,char* argv[]){
                 printf("[%d]",altura(raiz));
                 break;
             case 6:
-                maiorElemento(raiz);
+                printf("[%d]",maiorElemento(raiz));
                 break;
             case 7:
-                menorElemento(raiz);
+                printf("[%d]",menorElemento(raiz));
                 break;
             case 8:
+                scanf("%d",&valor);
+                remover(raiz,aux,valor);
+                break;
             case 9:
+                scanf("%d",&valor);
+                sucessor(raiz,valor,-1);
+                break;
             case 10:
+                scanf("%d",&valor);
+                antecessor(raiz,valor,-1);
+                break;
             case 99:
                 exit(0);
         }
