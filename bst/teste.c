@@ -24,8 +24,15 @@ int main(int argc,char* argv[]){
                 break;
             case 6:
                 printf("[%d]",maiorElemento(raiz));
+                break;
             case 7:
                 printf("[%d]",menorElemento(raiz));
+                break;
+            case 9:
+                printf("[%d]",quantidade(raiz,0));
+                break;
+            case 10:
+
             case 99:
                 exit(0);
         }

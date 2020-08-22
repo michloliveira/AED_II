@@ -59,3 +59,14 @@ int menorElemento(no* r){
         }
     }
 }
+int quantidade(no* r,int contador){
+    if(r != NULL){
+        contador++;
+        contador = quantidade(r->esq,contador); //contador recebe o calculo voltando
+        contador = quantidade(r->dir,contador); 
+        return contador;
+    }
+    else{
+        return contador;
+    }
+}
