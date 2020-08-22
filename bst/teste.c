@@ -32,7 +32,9 @@ int main(int argc,char* argv[]){
                 printf("[%d]",quantidade(raiz,0));
                 break;
             case 10:
-
+                scanf("%d",&valor);
+                printf("[%d]",existeElemento(raiz,valor));
+                break;
             case 99:
                 exit(0);
         }

@@ -70,3 +70,19 @@ int quantidade(no* r,int contador){
         return contador;
     }
 }
+int existeElemento(no* r, int valor){
+    if(r != NULL){
+        if(valor == r->valor){
+            return 1;
+        }
+        else if(valor < r->valor && r->esq != NULL){
+            existeElemento(r->esq,valor);
+        }
+        else if(valor > r->valor && r->dir != NULL){
+            existeElemento(r->dir,valor);
+        }
+        else{
+            return 0;
+        }
+    }
+}

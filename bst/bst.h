@@ -14,6 +14,7 @@ void posOrder(no* r);
 int maiorElemento(no* r);
 int menorElemento(no* r);
 int quantidade(no* r,int contador);
+int existeElemento(no* r,int valor);
 
 
 
