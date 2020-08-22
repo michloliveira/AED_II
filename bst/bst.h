@@ -11,7 +11,7 @@ no* inserir(no* r, int valor);
 void preOrder(no* r);
 void inOrder(no* r);
 void posOrder(no* r);
-    
+int maiorElemento(no* r);
 
 
 #endif

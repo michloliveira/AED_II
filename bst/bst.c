@@ -39,3 +39,13 @@ void posOrder(no* r){
         printf("[%d]",r->valor);
     }
 }
+int maiorElemento(no* r){
+    if(r != NULL){
+        if(r->dir != NULL){
+            maiorElemento(r->dir);
+        }
+        else{
+            return r->valor;
+        }
+    }
+}
