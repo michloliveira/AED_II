@@ -12,6 +12,6 @@ void preOrder(no* r);
 void inOrder(no* r);
 void posOrder(no* r);
 int maiorElemento(no* r);
-
+int menorElemento(no* r);
 
 #endif

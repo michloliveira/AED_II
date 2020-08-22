@@ -24,6 +24,8 @@ int main(int argc,char* argv[]){
                 break;
             case 6:
                 printf("[%d]",maiorElemento(raiz));
+            case 7:
+                printf("[%d]",menorElemento(raiz));
             case 99:
                 exit(0);
         }

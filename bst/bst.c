@@ -49,3 +49,13 @@ int maiorElemento(no* r){
         }
     }
 }
+int menorElemento(no* r){
+    if(r != NULL){
+        if(r->esq != NULL){
+            menorElemento(r->esq);
+        }
+        else{
+            return r->valor;
+        }
+    }
+}
