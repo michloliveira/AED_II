@@ -19,6 +19,7 @@ int max(int a, int b);
 int altura(no* raiz);
 void predecessor(no* r,int aux,int valor);
 void sucessor(no* r,int aux,int valor);
+no* remover(no* r,int valor);
 
 
 

@@ -151,3 +151,90 @@ void sucessor(no* r,int aux,int valor){
         }
     }
 }
+no* remover(no* r,int valor){
+    if(r != NULL){
+        if(existeElemento(r,valor) == 0){// verificando se o valor existe
+            return r;
+        }
+        no* ant = NULL;// instanciando um anterior
+        no* atual = r; //instanciando um no auxiliar
+        while(valor != atual->valor){ //---Buscando...
+            if(valor > atual->valor){
+                ant = atual;
+                atual = atual->dir;
+            }
+            else{
+                ant = atual;
+                atual = atual->esq;
+            }
+        }
+        //--------------------------------------------------------------
+        if(atual->dir == NULL && atual->esq == NULL){ //caso 1 ,remover na folha
+            //printf("entrou caso 1\n");
+            if(ant != NULL){
+                if(ant->dir == atual){
+                    ant->dir = NULL;
+                    free(atual);
+                    return r; //retorna a raiz
+                }
+                else{
+                    //printf("removeu!\n");
+                    ant->esq = NULL;
+                    free(atual);
+                    return r; //retorna raiz
+                }
+            }else{
+                free(atual);
+                return NULL;
+            }
+        }
+        //----------------------------------------------------------------------
+        if(atual->dir != NULL && atual->esq != NULL){ //caso 3 remover com 2 filhos
+            atual->valor = menorElemento(atual->dir); //atualiza valor atual com maior valor a direita
+            atual->dir = remover(atual->dir,atual->valor);
+            return r;
+        }
+        //----------------------------------------------------------------------
+        else{ //caso 2 , remover com 1 filho
+            if(ant != NULL){
+                if(ant->dir == atual){
+                    if(atual->dir != NULL){ //anterior dir aponta para atual dir
+                        ant->dir = atual->dir;
+                        free(atual);
+                        return r;
+                    }
+                    else{ //anterior dir aponta para atual esq
+                        ant->dir = atual->esq;
+                        free(atual);
+                        return r;
+                    }
+                }//ant-> esq == atual
+                else{
+                    if(atual->dir != NULL){ // anterior esq aponta para o atual dir
+                        ant->esq = atual->dir;
+                        free(atual);
+                        return r;
+                    }
+                    else{
+                        ant->esq = atual->esq; // anterior esq aponta para o atual esq
+                        free(atual);
+                        return r;
+                    }
+                }
+            }
+            else{
+                if(atual->dir != NULL){
+                    r = atual->dir;
+                    free(atual);
+                    return r;
+                }
+                else{
+                    r = atual->esq;
+                    free(atual);
+                    return r;
+                }
+            }
+        }
+    }
+    return r;
+}

@@ -22,6 +22,10 @@ int main(int argc,char* argv[]){
             case 4:
                 posOrder(raiz);
                 break;
+            case 5:
+                scanf("%d",&valor); 
+                raiz = remover(raiz,valor);
+                break;
             case 6:
                 printf("[%d]",maiorElemento(raiz));
                 break;
