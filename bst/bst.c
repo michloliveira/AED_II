@@ -103,24 +103,50 @@ int altura(no* r){
         return 0;
     }
 }
-int predecessor(no* r,int aux,int valor){
+void predecessor(no* r,int aux,int valor){
     if(r != NULL){
         if(valor == r->valor){
             if(r->esq != NULL){
-                return maiorElemento(r->esq);
+                printf("[%d",maiorElemento(r->esq));
             }
             else{
-                return aux;
+                if(aux != 0){
+                    printf("[%d]",aux);
+                }
             }
 
         }
         else{//buscando 
             if(valor > r->valor){ 
-                aux = r->valor; // atuliza auxiliar se r->valor for menor que o valor
+                aux = r->valor; // atuliza aux se r->valor for menor que o valor
                 predecessor(r->dir,aux,valor);
             }
             else{
                 predecessor(r->esq,aux,valor);
+            }
+        }
+    }
+}
+void sucessor(no* r,int aux,int valor){
+    if(r != NULL){
+        if(valor == r->valor){
+            if(r->dir != NULL){
+                printf("[%d]",menorElemento(r->dir));
+            }
+            else{
+                if(aux != 0){
+                    printf("[%d]",aux);
+                }
+                
+            }
+        }
+        else{
+            if(valor > r->valor){
+                sucessor(r->dir,aux,valor);
+            }
+            else{
+                aux = r->valor; //autualiza aux se r->valor for maior valor
+                sucessor(r->esq,aux,valor);
             }
         }
     }

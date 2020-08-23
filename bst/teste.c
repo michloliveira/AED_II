@@ -40,7 +40,11 @@ int main(int argc,char* argv[]){
                 break;
             case 11:
                 scanf("%d",&valor);
-                printf("[%d]",predecessor(raiz,0,valor));
+                predecessor(raiz,0,valor);
+                break;
+            case 12:
+                scanf("%d",&valor);
+                sucessor(raiz,0,valor);
                 break;
             case 99:
                 exit(0);
