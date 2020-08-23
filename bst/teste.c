@@ -38,6 +38,10 @@ int main(int argc,char* argv[]){
                 scanf("%d",&valor);
                 printf("[%d]",existeElemento(raiz,valor));
                 break;
+            case 11:
+                scanf("%d",&valor);
+                printf("[%d]",predecessor(raiz,0,valor));
+                break;
             case 99:
                 exit(0);
         }

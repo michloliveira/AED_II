@@ -103,3 +103,25 @@ int altura(no* r){
         return 0;
     }
 }
+int predecessor(no* r,int aux,int valor){
+    if(r != NULL){
+        if(valor == r->valor){
+            if(r->esq != NULL){
+                return maiorElemento(r->esq);
+            }
+            else{
+                return aux;
+            }
+
+        }
+        else{//buscando 
+            if(valor > r->valor){ 
+                aux = r->valor; // atuliza auxiliar se r->valor for menor que o valor
+                predecessor(r->dir,aux,valor);
+            }
+            else{
+                predecessor(r->esq,aux,valor);
+            }
+        }
+    }
+}

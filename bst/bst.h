@@ -17,6 +17,7 @@ int quantidade(no* r,int contador);
 int existeElemento(no* r,int valor);
 int max(int a, int b);
 int altura(no* raiz);
+int predecessor(no* r,int aux,int valor);
 
 
 
