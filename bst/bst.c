@@ -86,3 +86,20 @@ int existeElemento(no* r, int valor){
         }
     }
 }
+int max(int a, int b){
+    if(a > b){
+        return a;
+    }
+    else{
+        return b;
+    }
+}
+
+int altura(no* r){
+    if(r != NULL){
+        return 1 + max(altura(r->dir),altura(r->esq));
+    }
+    else{
+        return 0;
+    }
+}

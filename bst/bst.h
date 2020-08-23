@@ -15,6 +15,8 @@ int maiorElemento(no* r);
 int menorElemento(no* r);
 int quantidade(no* r,int contador);
 int existeElemento(no* r,int valor);
+int max(int a, int b);
+int altura(no* raiz);
 
 
 

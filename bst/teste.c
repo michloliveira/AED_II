@@ -28,6 +28,9 @@ int main(int argc,char* argv[]){
             case 7:
                 printf("[%d]",menorElemento(raiz));
                 break;
+            case 8:
+                printf("[%d]",altura(raiz));
+                break;
             case 9:
                 printf("[%d]",quantidade(raiz,0));
                 break;
