@@ -8,17 +8,17 @@ typedef struct no {
 }no;
 
 no* inserir(no* r, int valor);
-void preOrder(no* r);
-void inOrder(no* r);
-void posOrder(no* r);
-int maiorElemento(no* r);
-int menorElemento(no* r);
-int quantidade(no* r,int contador);
-int existeElemento(no* r,int valor);
+void preorder(no* r);
+void inorder(no* r);
+void posorder(no* r);
+no* maior(no* r);
+no* menor(no* r);
+int quantidade_elementos(no* r);
+int existe(no* r,int valor);
 int max(int a, int b);
 int altura(no* raiz);
-void predecessor(no* r,int aux,int valor);
-void sucessor(no* r,int aux,int valor);
+no* predecessor(no* r,int valor);
+no* sucessor(no* r,int valor);
 no* remover(no* r,int valor);
 
 

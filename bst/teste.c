@@ -6,6 +6,7 @@ int main(int argc,char* argv[]){
     no* raiz = NULL;
     while(1==1){
         int opcao;
+        no* retorno;
         scanf("%d",&opcao);
         switch(opcao){
             int valor;
@@ -14,41 +15,45 @@ int main(int argc,char* argv[]){
                 raiz = inserir(raiz,valor);
                 break;
             case 2:
-                preOrder(raiz);
+                preorder(raiz);
                 break;
             case 3:
-                inOrder(raiz);
+                inorder(raiz);
                 break;
             case 4:
-                posOrder(raiz);
+                posorder(raiz);
                 break;
             case 5:
                 scanf("%d",&valor); 
                 raiz = remover(raiz,valor);
                 break;
             case 6:
-                printf("[%d]",maiorElemento(raiz));
+                retorno = maior(raiz);
+                printf("[%d]",retorno->valor);
                 break;
             case 7:
-                printf("[%d]",menorElemento(raiz));
+                retorno = menor(raiz);
+                printf("[%d]",retorno->valor);
                 break;
             case 8:
                 printf("[%d]",altura(raiz));
                 break;
             case 9:
-                printf("[%d]",quantidade(raiz,0));
+                printf("[%d]",quantidade_elementos(raiz));
                 break;
             case 10:
                 scanf("%d",&valor);
-                printf("[%d]",existeElemento(raiz,valor));
+                printf("[%d]",existe(raiz,valor));
                 break;
             case 11:
                 scanf("%d",&valor);
-                predecessor(raiz,0,valor);
+                retorno = predecessor(raiz,valor);
+                printf("[%d]",retorno->valor);
                 break;
             case 12:
                 scanf("%d",&valor);
-                sucessor(raiz,0,valor);
+                retorno = sucessor(raiz,valor);
+                printf("[%d]",retorno->valor);
                 break;
             case 99:
                 exit(0);

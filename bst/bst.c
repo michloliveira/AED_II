@@ -18,68 +18,67 @@ no* inserir(no* r,int valor){
     }
     return r;
 }
-void preOrder(no* r){
+void preorder(no* r){
     if(r != NULL){
         printf("[%d]",r->valor);
-        preOrder(r->esq);
-        preOrder(r->dir);
+        preorder(r->esq);
+        preorder(r->dir);
     }
 }
-void inOrder(no* r){
+void inorder(no* r){
     if(r != NULL){
-        inOrder(r->esq);
+        inorder(r->esq);
         printf("[%d]",r->valor);
-        inOrder(r->dir);
+        inorder(r->dir);
     }
 }
-void posOrder(no* r){
+void posorder(no* r){
     if(r != NULL){
-        posOrder(r->esq);
-        posOrder(r->dir);
+        posorder(r->esq);
+        posorder(r->dir);
         printf("[%d]",r->valor);
     }
 }
-int maiorElemento(no* r){
+no* maior(no* r){
     if(r != NULL){
         if(r->dir != NULL){
-            maiorElemento(r->dir);
+            maior(r->dir);
         }
         else{
-            return r->valor;
+            return r;
         }
     }
 }
-int menorElemento(no* r){
+no* menor(no* r){
     if(r != NULL){
         if(r->esq != NULL){
-            menorElemento(r->esq);
+            menor(r->esq);
         }
         else{
-            return r->valor;
+            return r;
         }
     }
 }
-int quantidade(no* r,int contador){
+int quantidade_elementos(no* r){
     if(r != NULL){
-        contador++;
-        contador = quantidade(r->esq,contador); //contador recebe o calculo voltando
-        contador = quantidade(r->dir,contador); 
-        return contador;
+        int contadorEsquerdo = quantidade_elementos(r->esq);
+        int contadorDireito = quantidade_elementos(r->dir); 
+        return 1 + contadorDireito + contadorEsquerdo;
     }
     else{
-        return contador;
+        return 0;
     }
 }
-int existeElemento(no* r, int valor){
+int existe(no* r, int valor){
     if(r != NULL){
         if(valor == r->valor){
             return 1;
         }
         else if(valor < r->valor && r->esq != NULL){
-            existeElemento(r->esq,valor);
+            existe(r->esq,valor);
         }
         else if(valor > r->valor && r->dir != NULL){
-            existeElemento(r->dir,valor);
+            existe(r->dir,valor);
         }
         else{
             return 0;
@@ -103,61 +102,58 @@ int altura(no* r){
         return 0;
     }
 }
-void predecessor(no* r,int aux,int valor){
-    if(r != NULL){
-        if(valor == r->valor){
-            if(r->esq != NULL){
-                printf("[%d",maiorElemento(r->esq));
+no* predecessor(no* r,int valor){
+    no* aux = NULL;
+    no* raiz = r;
+    if(raiz != NULL){
+        while(valor != raiz->valor){ //buscando...
+            if(valor > raiz->valor){ 
+                aux = raiz; // atuliza aux se raiz->valor for menor que o valor
+                raiz = raiz->dir;
             }
             else{
-                if(aux != 0){
-                    printf("[%d]",aux);
-                }
+                raiz = raiz->esq;
             }
+        }
 
-        }
-        else{//buscando 
-            if(valor > r->valor){ 
-                aux = r->valor; // atuliza aux se r->valor for menor que o valor
-                predecessor(r->dir,aux,valor);
-            }
-            else{
-                predecessor(r->esq,aux,valor);
-            }
-        }
-    }
-}
-void sucessor(no* r,int aux,int valor){
-    if(r != NULL){
-        if(valor == r->valor){
-            if(r->dir != NULL){
-                printf("[%d]",menorElemento(r->dir));
-            }
-            else{
-                if(aux != 0){
-                    printf("[%d]",aux);
-                }
-                
-            }
+        if(raiz->esq != NULL){
+            return maior(raiz->esq);
         }
         else{
-            if(valor > r->valor){
-                sucessor(r->dir,aux,valor);
+            return aux;
+        }   
+    }
+}
+no* sucessor(no* r,int valor){
+    no* aux = NULL;
+    no* raiz = r;
+    if(raiz != NULL){
+        while(valor != raiz->valor){ //buscando...
+            if(valor > raiz->valor){ 
+                raiz = raiz->dir;
             }
             else{
-                aux = r->valor; //autualiza aux se r->valor for maior valor
-                sucessor(r->esq,aux,valor);
+                aux = raiz; //autualiza aux se r->valor for
+                raiz = raiz->esq;
             }
         }
+
+        if(raiz->dir != NULL){
+            return menor(raiz->dir);
+        }
+        else{
+            return aux;
+        }   
     }
 }
 no* remover(no* r,int valor){
     if(r != NULL){
-        if(existeElemento(r,valor) == 0){// verificando se o valor existe
+        if(existe(r,valor) == 0){// verificando se o valor existe
             return r;
         }
         no* ant = NULL;// instanciando um anterior
         no* atual = r; //instanciando um no auxiliar
+        no* aux = NULL; //instanciando  um no aux;
         while(valor != atual->valor){ //---Buscando...
             if(valor > atual->valor){
                 ant = atual;
@@ -190,7 +186,8 @@ no* remover(no* r,int valor){
         }
         //----------------------------------------------------------------------
         if(atual->dir != NULL && atual->esq != NULL){ //caso 3 remover com 2 filhos
-            atual->valor = menorElemento(atual->dir); //atualiza valor atual com maior valor a direita
+            aux = menor(atual->dir); //atualiza valor atual com menor valor a direita
+            atual->valor = aux->valor;
             atual->dir = remover(atual->dir,atual->valor);
             return r;
         }
