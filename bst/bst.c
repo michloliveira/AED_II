@@ -2,25 +2,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-no* inserir(no* r,int valor){
+no* inserir(no* r,int chave){
     if(r == NULL){
         no* novo =(no*)malloc(sizeof(no));
         novo->dir = NULL;
         novo->esq = NULL;
-        novo->valor = valor;
+        novo->chave = chave;
         return novo;
     }
-    if(valor > r->valor){
-        r->dir = inserir(r->dir,valor);
+    if(chave > r->chave){
+        r->dir = inserir(r->dir,chave);
     }
     else{
-        r->esq = inserir(r->esq,valor);
+        r->esq = inserir(r->esq,chave);
     }
     return r;
 }
 void preorder(no* r){
     if(r != NULL){
-        printf("[%d]",r->valor);
+        printf("[%d]",r->chave);
         preorder(r->esq);
         preorder(r->dir);
     }
@@ -28,7 +28,7 @@ void preorder(no* r){
 void inorder(no* r){
     if(r != NULL){
         inorder(r->esq);
-        printf("[%d]",r->valor);
+        printf("[%d]",r->chave);
         inorder(r->dir);
     }
 }
@@ -36,7 +36,7 @@ void posorder(no* r){
     if(r != NULL){
         posorder(r->esq);
         posorder(r->dir);
-        printf("[%d]",r->valor);
+        printf("[%d]",r->chave);
     }
 }
 no* maior(no* r){
@@ -69,16 +69,16 @@ int quantidade_elementos(no* r){
         return 0;
     }
 }
-int existe(no* r, int valor){
+int existe(no* r, int chave){
     if(r != NULL){
-        if(valor == r->valor){
+        if(chave == r->chave){
             return 1;
         }
-        else if(valor < r->valor && r->esq != NULL){
-            existe(r->esq,valor);
+        else if(chave < r->chave && r->esq != NULL){
+            existe(r->esq,chave);
         }
-        else if(valor > r->valor && r->dir != NULL){
-            existe(r->dir,valor);
+        else if(chave > r->chave && r->dir != NULL){
+            existe(r->dir,chave);
         }
         else{
             return 0;
@@ -102,13 +102,13 @@ int altura(no* r){
         return 0;
     }
 }
-no* predecessor(no* r,int valor){
+no* predecessor(no* r,int chave){
     no* aux = NULL;
     no* raiz = r;
     if(raiz != NULL){
-        while(valor != raiz->valor){ //buscando...
-            if(valor > raiz->valor){ 
-                aux = raiz; // atuliza aux se raiz->valor for menor que o valor
+        while(chave != raiz->chave){ //buscando...
+            if(chave > raiz->chave){ 
+                aux = raiz; // atuliza aux se raiz->chave for menor que o chave
                 raiz = raiz->dir;
             }
             else{
@@ -124,16 +124,16 @@ no* predecessor(no* r,int valor){
         }   
     }
 }
-no* sucessor(no* r,int valor){
+no* sucessor(no* r,int chave){
     no* aux = NULL;
     no* raiz = r;
     if(raiz != NULL){
-        while(valor != raiz->valor){ //buscando...
-            if(valor > raiz->valor){ 
+        while(chave != raiz->chave){ //buscando...
+            if(chave > raiz->chave){ 
                 raiz = raiz->dir;
             }
             else{
-                aux = raiz; //autualiza aux se r->valor for
+                aux = raiz; //autualiza aux se r->chave for
                 raiz = raiz->esq;
             }
         }
@@ -146,16 +146,16 @@ no* sucessor(no* r,int valor){
         }   
     }
 }
-no* remover(no* r,int valor){
+no* remover(no* r,int chave){
     if(r != NULL){
-        if(existe(r,valor) == 0){// verificando se o valor existe
+        if(existe(r,chave) == 0){// verificando se o chave existe
             return r;
         }
         no* ant = NULL;// instanciando um anterior
         no* atual = r; //instanciando um no auxiliar
         no* aux = NULL; //instanciando  um no aux;
-        while(valor != atual->valor){ //---Buscando...
-            if(valor > atual->valor){
+        while(chave != atual->chave){ //---Buscando...
+            if(chave > atual->chave){
                 ant = atual;
                 atual = atual->dir;
             }
@@ -186,9 +186,9 @@ no* remover(no* r,int valor){
         }
         //----------------------------------------------------------------------
         if(atual->dir != NULL && atual->esq != NULL){ //caso 3 remover com 2 filhos
-            aux = menor(atual->dir); //atualiza valor atual com menor valor a direita
-            atual->valor = aux->valor;
-            atual->dir = remover(atual->dir,atual->valor);
+            aux = menor(atual->dir); //atualiza chave atual com menor chave a direita
+            atual->chave = aux->chave;
+            atual->dir = remover(atual->dir,atual->chave);
             return r;
         }
         //----------------------------------------------------------------------
