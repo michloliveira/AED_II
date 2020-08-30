@@ -55,6 +55,7 @@ arvore adicionar (int valor, arvore raiz, int *cresceu) {
 					break;
 				case 1:
 					cresceu = 0;
+					//raiz->fb = 2;                             ----
                     //o fator de balanço passaria ao valor 2,
 					return rotacionar(raiz);
 			}
@@ -62,6 +63,24 @@ arvore adicionar (int valor, arvore raiz, int *cresceu) {
 
 	} else {
        //Elemento menor que raiz relativa, fazer o caso simétrico
+	   raiz->esq = adicionar(valor,raiz->esq,cresceu);
+	   if(*cresceu){
+		   switch(*cresceu){
+			   case 0:
+			   		raiz->fb = -1;
+					*cresceu = 1;
+					break;
+			   case -1:
+			   		raiz->fb = -2;
+					*cresceu = 1;
+					return rotacionar(raiz);
+			   case 1:
+			   		raiz->fb = 0;
+					*cresceu = 0;
+					break;
+
+		   }
+	   }
 	}
     //Se tirar isso, caga a árvore toda
 	return raiz;
@@ -89,6 +108,13 @@ arvore rotacionar(arvore raiz) {
 			} 
 	} else {
     //implementar o simétrico
+		switch(raiz->esq->fb){
+			case 0:
+			case -1:
+				return rotacao_simples_direita(raiz); //falta implementar
+			case 1:
+				return rotacao_dupla_direita(raiz);
+		}
 	}
 }
 
