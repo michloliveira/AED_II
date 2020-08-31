@@ -179,6 +179,8 @@ arvore rotacao_simples_esquerda(arvore raiz) {
     //Atualiza os ponteiros
 	p->dir = t1;
 	u->esq = p;
+	/*u->dir = t1;
+	p->dir = t1;*/
     
     //Atualiza os fatores de balanço de acordo com o fb de u
     //Esses valores vieram dos cálculos demonstrados na aula
@@ -196,15 +198,30 @@ arvore rotacao_simples_esquerda(arvore raiz) {
 
 arvore rotacao_dupla_esquerda(arvore raiz) {
 	printf("rotacao dupla esquerda\n");
+	raiz->dir = rotacao_simples_direita(raiz->dir);
+	raiz = rotacao_simples_esquerda(raiz);
 	return raiz;
 }
 
 arvore rotacao_simples_direita(arvore raiz) {
-	printf("rotacao simples esquerda\n");
+	arvore p,u,t1 ,t2,t3;
+	//inicializar os ponteiros
+	p = raiz;
+	u = raiz->esq;
+	t1 = u->esq;
+	t2 = u->dir;
+	t3 = p->dir;
+	//atualiza ponteiros
+	u->dir = p;
+	p->esq = t2;
+	//falta atualizar FB
+
 	return raiz;
 }
 arvore rotacao_dupla_direita(arvore raiz) {
 	printf("rotacao dupla direita\n");
+	raiz->esq = rotacao_simples_esquerda(raiz->esq);
+	raiz = rotacao_simples_direita(raiz);
 	return raiz;
 }
 
