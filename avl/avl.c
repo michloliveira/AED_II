@@ -51,10 +51,10 @@ arvore adicionar (int valor, arvore raiz, int *cresceu) {
 					break;
 			    case -1:
 					raiz->fb = 0;
-					cresceu = 0;
+					*cresceu = 0;
 					break;
 				case 1:
-					cresceu = 0;
+					*cresceu = 0;
 					//raiz->fb = 2;                             ----
                     //o fator de balanço passaria ao valor 2,
 					return rotacionar(raiz);
@@ -65,15 +65,16 @@ arvore adicionar (int valor, arvore raiz, int *cresceu) {
        //Elemento menor que raiz relativa, fazer o caso simétrico
 	   raiz->esq = adicionar(valor,raiz->esq,cresceu);
 	   if(*cresceu){
-		   switch(*cresceu){
+		   switch(raiz->fb){
 			   case 0:
 			   		raiz->fb = -1;
 					*cresceu = 1;
 					break;
 			   case -1:
-			   		raiz->fb = -2;
-					*cresceu = 1;
+			   		//raiz->fb = -2;
+					*cresceu = 0;
 					return rotacionar(raiz);
+					break;
 			   case 1:
 			   		raiz->fb = 0;
 					*cresceu = 0;
@@ -166,6 +167,7 @@ retorna a raiz relativa da árvore resultante
 
 -------*/
 arvore rotacao_simples_esquerda(arvore raiz) {
+	printf("rotação simples-esquerda\n");
 	arvore p, u, t1, t2, t3;
     //inicializa os ponteiros
 	p = raiz;
@@ -177,8 +179,8 @@ arvore rotacao_simples_esquerda(arvore raiz) {
     t3 = u->dir;
 
     //Atualiza os ponteiros
-	p->dir = t1;
 	u->esq = p;
+	p->dir = t2;
 	/*u->dir = t1;
 	p->dir = t1;*/
     
@@ -198,31 +200,84 @@ arvore rotacao_simples_esquerda(arvore raiz) {
 
 arvore rotacao_dupla_esquerda(arvore raiz) {
 	printf("rotacao dupla esquerda\n");
-	raiz->dir = rotacao_simples_direita(raiz->dir);
-	raiz = rotacao_simples_esquerda(raiz);
-	return raiz;
+	arvore p,u,v;
+	p = raiz;
+	u = p->dir;
+	v = u->esq;
+	u->esq = v->dir;
+	v->dir = u;
+	p->dir = v->esq;
+	v->esq = p;
+	if(v->fb == 0){ //todos possuem subArvore
+	printf("entrou no if\n");
+		p->fb = 0;		   
+		u->fb = 0;	
+		v->fb = 0;	
+	}
+	else if(v->fb == 1){ // subArvore dir de p vazia
+	printf("entrou no else if\n");
+		p->fb = -1;
+		u->fb = 0;
+		v->fb = 0;
+	}
+	else{ //subArvore esq de u vazia
+	printf("entrou no else\n");
+		u->fb = 1;
+		p->fb = 0;
+		v->fb = 0;
+	}
+	return v;
 }
 
 arvore rotacao_simples_direita(arvore raiz) {
+	printf("rotação simples-direita\n");
 	arvore p,u,t1 ,t2,t3;
 	//inicializar os ponteiros
 	p = raiz;
 	u = raiz->esq;
-	t1 = u->esq;
+	t1 = p->dir;
 	t2 = u->dir;
-	t3 = p->dir;
+	t3 = u->esq;
 	//atualiza ponteiros
 	u->dir = p;
 	p->esq = t2;
 	//falta atualizar FB
+	if(u->fb == -1) {
+		p->fb = 0;
+		u->fb = 0;
+	} else {
+		p->fb = -1;
+		u->fb = 1;
+	}	
 
-	return raiz;
+	return u;
 }
 arvore rotacao_dupla_direita(arvore raiz) {
 	printf("rotacao dupla direita\n");
-	raiz->esq = rotacao_simples_esquerda(raiz->esq);
-	raiz = rotacao_simples_direita(raiz);
-	return raiz;
+	arvore p,u,v;
+	p = raiz;
+	u = p->esq;
+	v = u->dir;
+	u->dir = v->esq;
+	v->esq = u;
+	p->esq = v->dir;
+	v->dir = p;
+	if(v->fb == 0){
+		u->fb = 0;
+		p->fb = 0;
+		v->fb = 0;
+	}
+	else if(v->fb == 1){
+		u->fb = -1;
+		v->fb = 0;
+		p->fb = 0;
+	}
+	else{
+		p->fb = 1;
+		v->fb = 0;
+		u->fb = 0;
+	}
+	return v;
 }
 
 
