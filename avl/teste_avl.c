@@ -6,6 +6,7 @@ int main(int argc, char * argv[]) {
 	arvore a;
 	int opcao;
 	int controleFB;
+	int controleFBremover;
 	inicializar(&a);
 
 	while(1) {
@@ -40,7 +41,7 @@ int main(int argc, char * argv[]) {
 						break;
 				case 8:
 						scanf("%d", &valor);
-						a = remover(valor, a);
+						a = remover(valor, a,&controleFBremover);
 						break;
 				case 9:
 						imprimir(a);

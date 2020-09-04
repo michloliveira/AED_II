@@ -21,7 +21,7 @@ void imprimir(arvore raiz);
 void pre_order(arvore raiz);
 void pos_order(arvore raiz);
 void in_order(arvore raiz);
-arvore remover (int valor, arvore raiz);
+arvore remover (int valor, arvore raiz,int *diminuiu);
 void imprimir_elemento(arvore raiz);
 arvore rotacionar(arvore raiz);
 arvore rotacao_simples_direita(arvore raiz);
