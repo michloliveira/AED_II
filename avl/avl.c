@@ -124,49 +124,98 @@ Só está implementada a "base" do remover da BST.
 Incluir a variável de controle "diminuir" similar a "cresceu do adicionar.
 ------*/
 arvore remover (int valor, arvore raiz,int *diminuiu) {
-	if(raiz == NULL) 
+	if(raiz == NULL){
 		return NULL;
-	
-	if(raiz->dado == valor) {		
-		if(raiz->esq == NULL) {
-			return raiz->dir;
+	}
+	if(raiz->dado == valor){
+		if(raiz->dir == NULL && raiz->esq == NULL){ //remover na folha
+			*diminuiu = 1;
+			free(raiz);
+			return NULL;
 		}
-		if(raiz->dir == NULL) {
-			return raiz->esq;
+		else if(raiz->dir != NULL  && raiz->esq != NULL){//remover com 2 filhos
+			raiz->dado = menor_elemento(raiz->dir);//atualiza valor atual com menor dado a direita
+			raiz->dir = remover(raiz->dado,raiz->dir,diminuiu);
+			if(*diminuiu){
+				switch(raiz->fb){
+					case 0:
+						raiz->fb = -1;
+						*diminuiu = 0;
+						break;
+					case 1:
+						raiz->fb = 0;
+						*diminuiu = 0;
+						break;
+					case -1:
+						raiz->fb = -2;
+						if(raiz->esq->fb == 0){
+							*diminuiu = 0;
+						}
+						else{
+							*diminuiu = 1;
+						}
+						return rotacionar(raiz);
+						break;
+				}
+			}
+			return raiz;
 		}
-		raiz->dado = maior_elemento(raiz->esq);
-		raiz->esq = remover(raiz->dado, raiz->esq,diminuiu);
-		return raiz;
-	}	
+		else{//remover com 1 filho
+			if(raiz->dir != NULL){
+				*diminuiu = 1;
+				return raiz->dir;
+			}
+			else{
+				*diminuiu = 1;
+				return raiz->esq;
+			}
+		}
+	}
 	if(valor > raiz->dado) {
 		raiz->dir = remover(valor, raiz->dir,diminuiu);
 		if(*diminuiu){//Diminuiu!, atualiza o fator de balanço do nó atual
 			switch(raiz->fb){
 				case 1:
 					raiz->fb = 0;
+					*diminuiu = 1;
 					break;
 				case 0:
 					raiz->fb = -1;
+					*diminuiu = 0;
 					break;
 				case -1:
 					raiz->fb = -2; // dispara a rotação
+					if(raiz->esq->fb == 0){
+						*diminuiu = 0;
+					}
+					else{
+						*diminuiu = 1;
+					}
 					return rotacionar(raiz);
 					break;
 			}
 		}
 	} else {
 		raiz->esq = remover(valor, raiz->esq,diminuiu);
-		if(diminuiu){
-			switch(*diminuiu){
+		if(*diminuiu){
+			switch(raiz->fb){
 				case 1:
 					raiz->fb = 2;
+					if(raiz->dir->fb == 0){
+						*diminuiu = 0;
+					}
+					else{
+						*diminuiu = 1;
+					}
 					return rotacionar(raiz);
 					break;
 				case 0:
 					raiz->fb = 1;
+					*diminuiu = 0;
 					break;
 				case -1:
 					raiz->fb = 0;
+					*diminuiu = 1;
 					break;
 			}
 		}
