@@ -413,7 +413,7 @@ int menor_elemento(arvore raiz) {
 	if(raiz->esq == NULL)
 			return raiz->dado;
 	else
-			return maior_elemento(raiz->esq);
+			return menor_elemento(raiz->esq);
 }
 
 void pre_order(arvore raiz) {
