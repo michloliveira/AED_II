@@ -134,25 +134,25 @@ arvore remover (int valor, arvore raiz,int *diminuiu) {
 			return NULL;
 		}
 		else if(raiz->dir != NULL  && raiz->esq != NULL){//remover com 2 filhos
-			raiz->dado = menor_elemento(raiz->dir);//atualiza valor atual com menor dado a direita
-			raiz->dir = remover(raiz->dado,raiz->dir,diminuiu);
+			raiz->dado = maior_elemento(raiz->esq);//atualiza valor atual com maior dado a esquerda
+			raiz->esq = remover(raiz->dado,raiz->esq,diminuiu);
 			if(*diminuiu){
 				switch(raiz->fb){
 					case 0:
-						raiz->fb = -1;
-						*diminuiu = 0;
-						break;
-					case 1:
-						raiz->fb = 0;
+						raiz->fb = 1;
 						*diminuiu = 0;
 						break;
 					case -1:
-						raiz->fb = -2;
-						if(raiz->esq->fb == 0){
-							*diminuiu = 0;
+						raiz->fb = 0;
+						*diminuiu = 1;
+						break;
+					case 1:
+						raiz->fb = 2;
+						if(raiz->dir->fb == 0){
+							*diminuiu = 1;
 						}
 						else{
-							*diminuiu = 1;
+							*diminuiu = 0;
 						}
 						return rotacionar(raiz);
 						break;
@@ -244,7 +244,6 @@ retorna a raiz relativa da árvore resultante
 
 -------*/
 arvore rotacao_simples_esquerda(arvore raiz) {
-	printf("rotação simples-esquerda\n");
 	arvore p, u, t1, t2, t3;
     //inicializa os ponteiros
 	p = raiz;
@@ -276,7 +275,6 @@ arvore rotacao_simples_esquerda(arvore raiz) {
 }
 
 arvore rotacao_dupla_esquerda(arvore raiz) {
-	printf("rotacao dupla esquerda\n");
 	arvore p,u,v;
 	p = raiz;
 	u = p->dir;
@@ -286,19 +284,16 @@ arvore rotacao_dupla_esquerda(arvore raiz) {
 	p->dir = v->esq;
 	v->esq = p;
 	if(v->fb == 0){ //todos possuem subArvore
-	printf("entrou no if\n");
 		p->fb = 0;		   
 		u->fb = 0;	
 		v->fb = 0;	
 	}
 	else if(v->fb == 1){ // subArvore dir de p vazia
-	printf("entrou no else if\n");
 		p->fb = -1;
 		u->fb = 0;
 		v->fb = 0;
 	}
 	else{ //subArvore esq de u vazia
-	printf("entrou no else\n");
 		u->fb = 1;
 		p->fb = 0;
 		v->fb = 0;
@@ -307,7 +302,6 @@ arvore rotacao_dupla_esquerda(arvore raiz) {
 }
 
 arvore rotacao_simples_direita(arvore raiz) {
-	printf("rotação simples-direita\n");
 	arvore p,u,t1 ,t2,t3;
 	//inicializar os ponteiros
 	p = raiz;
@@ -330,7 +324,6 @@ arvore rotacao_simples_direita(arvore raiz) {
 	return u;
 }
 arvore rotacao_dupla_direita(arvore raiz) {
-	printf("rotacao dupla direita\n");
 	arvore p,u,v;
 	p = raiz;
 	u = p->esq;
