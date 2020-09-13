@@ -149,10 +149,10 @@ arvore remover (int valor, arvore raiz,int *diminuiu) {
 					case 1:
 						raiz->fb = 2;
 						if(raiz->dir->fb == 0){
-							*diminuiu = 1;
+							*diminuiu = 0;
 						}
 						else{
-							*diminuiu = 0;
+							*diminuiu = 1;
 						}
 						return rotacionar(raiz);
 						break;
