@@ -81,24 +81,31 @@ void ajustar(arvore *raiz, arvore elemento){
 				elemento = elemento->pai->pai;
 				continue;
 			} 
-			//caso 2a: rotação simples direita
+			//caso 2a: rotacao simples direita
 			if(eh_filho_esquerdo(elemento) && eh_filho_esquerdo(elemento->pai)) {
 					rotacao_simples_direita(raiz, elemento->pai->pai);
 					elemento->pai->cor = PRETO;
 					elemento->pai->dir->cor = VERMELHO;
 					continue;
 			}
-			//caso 2b: rotação simples esquerda
-			if() {
-					continue;
+			//caso 2b: rotacao simples esquerda
+			if(!eh_filho_esquerdo(elemento)&& !eh_filho_esquerdo(elemento->pai)) {
+				rotacao_simples_esquerda(raiz,elemento->pai->pai);
+				elemento->pai->cor = PRETO;
+				elemento->pai->esq->cor = VERMELHO;
+				continue;
 			}
-			//caso 3a: rotação dupla direita
-			if() {
-					continue;
+			//caso 3a: rotacao dupla direita
+			if(!eh_filho_esquerdo(elemento) && eh_filho_esquerdo(elemento->pai)) {//se o filho é filho esquerdo && o pai é filho direito
+				//rotacao_dupla_direita(raiz,elemento->pai->pai);
+				//falta pintar
+				continue;
 			}
-			//caso 3b: rotação dupla esquerda
-			if( ) {
-					continue;
+			//caso 3b: rotacao dupla esquerda
+			if(eh_filho_esquerdo(elemento) && !eh_filho_esquerdo(elemento->pai)) {
+				//rotacao_dupla_esquerda(raiz,elemento->pai->pai);
+				//falta pintar
+				continue;
 			}
 
 	}
@@ -106,8 +113,8 @@ void ajustar(arvore *raiz, arvore elemento){
 	(*raiz)->cor = PRETO;
 }
 
-/* Realiza a rotação simples direita
-Antes da rotação: 
+/* Realiza a rotacao simples direita
+Antes da rotacao: 
 cor(p) = Preto
 cor(u) = cor(v) = Vermelho
 
@@ -117,14 +124,14 @@ cor(u) = cor(v) = Vermelho
     / \               / \
    v  t1             t1 t2
 
-Após aa rotação: 
+Após aa rotacao: 
 cor(u) = Preto
 cor(v) = cor(p) = Vermelho
 */
 void rotacao_simples_direita(arvore *raiz, arvore pivo){
 			arvore u, t1;
 			u = pivo->esq;
-            t1 = u->esq;
+            t1 = u->dir;
 
             /*Para fazer a ligação da raiz da sub-árvore resultante com o seu pai, é preciso saber se o pivo p era um filho esquerdo ou direito*/
 			int posicao_pivo_esq = eh_filho_esquerdo(pivo);
@@ -148,16 +155,49 @@ void rotacao_simples_direita(arvore *raiz, arvore pivo){
 			if(eh_raiz(u))
 				*raiz = u;
 			else {
-              //Caso contrário (se existir) é preciso ligar o restante da árvore a esta sub-árvore, resultante da rotação
+              //Caso contrário (se existir) é preciso ligar o restante da árvore a esta sub-árvore, resultante da rotacao
 					if(posicao_pivo_esq)
 							u->pai->esq = u;
 					else
 							u->pai->dir = u;
 			}
+printf("rotacao_simples_Direita\n");
 }
-
+/* rotacao simples esquerda
+	   p			u
+	  / \		   / \
+	 t2  u    =>  p	  v
+	 	/ \      / \
+	   t1  v    t2 t1
+*/
 void rotacao_simples_esquerda(arvore *raiz, arvore pivo) {
-
+	arvore u, t1;
+	u = pivo->dir;
+	t1= u->esq;
+	int posicao_pivo_esq = eh_filho_esquerdo(pivo);
+	//atualização dos ponteiros
+	pivo->dir = t1;
+	if(t1 != NULL){
+		t1->pai = pivo;
+	}
+	u->esq = pivo;
+	u->pai = pivo->pai;
+	pivo->pai = u;
+	//mudança de cor
+	pivo->cor = VERMELHO;
+	u->cor = PRETO;
+	if(eh_raiz(u)){
+		*raiz = u;
+	}
+	else{
+		if(posicao_pivo_esq){
+			u->pai->esq = u;
+		}
+		else{
+			u->pai->dir = u;
+		}
+	}
+	printf("rotacao_simples_esquerda\n");
 }
 
 /*Retorna a cor de um nó. Observe que, por definição, o null é preto*/
@@ -230,7 +270,7 @@ int menor_elemento(arvore raiz) {
 	if(raiz->esq == NULL)
 			return raiz->dado;
 	else
-			return maior_elemento(raiz->esq);
+			return menor_elemento(raiz->esq);
 }
 
 void pre_order(arvore raiz) {
@@ -376,7 +416,7 @@ void reajustar(arvore *raiz, arvore elemento){
                 reajustar(raiz, elemento);
 				return;
 	}
-
+/*
 	//caso 3
 	if() {
 		
@@ -407,7 +447,7 @@ void reajustar(arvore *raiz, arvore elemento){
 	//caso 6b
 	if() {		
 				return;
-	}
+	}*/
 }
 
 void retira_duplo_preto(arvore *raiz, arvore elemento) {

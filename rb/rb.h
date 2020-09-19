@@ -33,6 +33,8 @@ void ajustar(arvore *raiz, arvore elemento);
 void reajustar(arvore *raiz, arvore elemento);
 void rotacao_simples_direita(arvore *raiz, arvore pivo);
 void rotacao_simples_esquerda(arvore *raiz, arvore pivo);
+void rotacao_dupla_direita(arvore *raiz, arvore pivo);
+void rotacao_dupla_esquerda(arvore *raiz, arvore pivo);
 
 int eh_raiz(arvore elemento);
 int eh_filho_esquerdo(arvore elemento);
