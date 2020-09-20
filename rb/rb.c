@@ -96,15 +96,13 @@ void ajustar(arvore *raiz, arvore elemento){
 				continue;
 			}
 			//caso 3a: rotacao dupla direita
-			if(!eh_filho_esquerdo(elemento) && eh_filho_esquerdo(elemento->pai)) {//se o filho é filho esquerdo && o pai é filho direito
-				//rotacao_dupla_direita(raiz,elemento->pai->pai);
-				//falta pintar
+			if(!eh_filho_esquerdo(elemento) && eh_filho_esquerdo(elemento->pai) && cor(tio(elemento)) == PRETO){//se o filho é filho esquerdo && o pai é filho direito
+				rotacao_dupla_direita(raiz,elemento->pai->pai);
 				continue;
 			}
 			//caso 3b: rotacao dupla esquerda
-			if(eh_filho_esquerdo(elemento) && !eh_filho_esquerdo(elemento->pai)) {
-				//rotacao_dupla_esquerda(raiz,elemento->pai->pai);
-				//falta pintar
+			if(eh_filho_esquerdo(elemento) && !eh_filho_esquerdo(elemento->pai) && cor(tio(elemento)) == PRETO){
+				rotacao_dupla_esquerda(raiz,elemento->pai->pai);
 				continue;
 			}
 
@@ -161,7 +159,6 @@ void rotacao_simples_direita(arvore *raiz, arvore pivo){
 					else
 							u->pai->dir = u;
 			}
-printf("rotacao_simples_Direita\n");
 }
 /* rotacao simples esquerda
 	   p			u
@@ -198,6 +195,97 @@ void rotacao_simples_esquerda(arvore *raiz, arvore pivo) {
 		}
 	}
 	printf("rotacao_simples_esquerda\n");
+}
+/*
+	p					p					v
+   / \				   / \				   / \
+  t1  u				  t1  v				  p    u 
+     / \		=> 	     / \ 		=>   / \  / \
+	v   t4				t2  u			t1 t2 t3 t4
+   / \					   / \
+  t2 t3					  t3  t4
+*/
+void rotacao_dupla_direita(arvore *raiz, arvore pivo){
+	arvore v,u,t2,t3;
+	u = pivo->esq;
+	v = u->dir;
+	t2 = v->esq;
+	t3 = v->dir;
+	int posicao_pivo_esq = eh_filho_esquerdo(pivo);
+	//rotação simples direita
+	u->dir = t2;
+	v->esq = u;
+	pivo->esq = v;
+	//rotação simples esquerda
+	pivo->esq = t3;
+	v->dir = pivo;
+	v->esq = u;
+	//atualiza pai
+	u->pai = v;
+	v->pai = pivo->pai;
+	if(t2!= NULL){
+		t2->pai = u;
+	}
+	if(t3!= NULL){
+		t3 = pivo;
+	}
+	//mudar as cores
+	pivo->cor = VERMELHO;
+	v->cor = PRETO;
+	if(eh_raiz(pivo)){
+		*raiz = v;
+	}
+	else{
+		if(posicao_pivo_esq){
+			pivo->pai->esq = v;
+		}
+		else{
+			pivo->pai-> dir = v;
+		}
+	}
+	pivo->pai = v;
+
+}
+void rotacao_dupla_esquerda(arvore *raiz, arvore pivo){
+	arvore v,u,t2,t3;
+	u = pivo->dir;
+	v = u->esq;
+	t2 = v->esq;
+	t3 = v->dir;
+	int posicao_pivo_esq = eh_filho_esquerdo(pivo);
+	//rotação simples esquerda
+	u->esq = t3;
+	v->dir = u;
+	pivo->dir = v;
+	//rotação simples direita
+	pivo->dir = t2;
+	v->esq = pivo;
+	v->dir = u;
+	//atualiza pai
+	u->pai = v;
+	v->pai = pivo->pai;
+	if(t2!= NULL){
+		t2->pai = pivo;
+	}
+	if(t3!= NULL){
+		t3 = u;
+	}
+	//mudar as cores
+	pivo->cor = VERMELHO;
+	v->cor = PRETO;
+	if(eh_raiz(pivo)){
+		*raiz = v;
+	}
+	else{
+		if(posicao_pivo_esq){
+			pivo->pai->esq = v;
+		}
+		else{
+			pivo->pai-> dir = v;
+		}
+	}
+	pivo->pai = v;
+
 }
 
 /*Retorna a cor de um nó. Observe que, por definição, o null é preto*/
