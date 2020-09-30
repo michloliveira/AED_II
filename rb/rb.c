@@ -527,12 +527,14 @@ void reajustar(arvore *raiz, arvore elemento){
 		 if(eh_filho_esquerdo(elemento)){
 			 elemento->pai->dir->cor = VERMELHO;
 			 elemento->pai->cor = DUPLO_PRETO;
-			 elemento->cor = PRETO;
+			 //elemento->cor = PRETO;
+			 retira_duplo_preto(raiz,elemento);
 		 }
 		 else{
 			 elemento->pai->esq->cor = VERMELHO;
 			 elemento->pai->cor = DUPLO_PRETO;
-			 elemento->cor = PRETO;
+			 //elemento->cor = PRETO;
+			 retira_duplo_preto(raiz,elemento);
 		 }
 
 		reajustar(raiz,elemento->pai);
@@ -570,6 +572,7 @@ void reajustar(arvore *raiz, arvore elemento){
 		x = elemento->pai->dir->esq;
 		y = elemento->pai->dir->dir;
 		//rotacionar
+		s->esq = x->dir;
 		x->dir = s;
 		p->dir = x;
 		//set pai
