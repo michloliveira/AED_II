@@ -25,10 +25,6 @@ void adicionar (int valor, arvore *raiz) {
     //utiliza-se *raiz, por ser um ponteiro de ponteiro
 	posicao = *raiz;
 	pai = NULL;
-
-	/*navega na árvore até encontrar a posição vaga apropriada para o elemento,
-		nesta "descida" é necessário manter o ponteiro para o pai, pois após encontrar 
-		a posição vaga (NULL) não seria possível navegar para o pai com o ponteiro posicao->pai */
 	while(posicao != NULL) {
 			pai = posicao;
 			if(valor > posicao->dado) 
@@ -194,7 +190,6 @@ void rotacao_simples_esquerda(arvore *raiz, arvore pivo) {
 			u->pai->dir = u;
 		}
 	}
-	printf("rotacao_simples_esquerda\n");
 }
 /*
 	p					p					v
@@ -490,7 +485,6 @@ void reajustar(arvore *raiz, arvore elemento){
 //	cor(irmao(elemento)->dir), cor(irmao(elemento)->esq));
 	//caso 1
 	if(eh_raiz(elemento)) {
-		printf("caso 1\n");
 		elemento->cor = PRETO;
 		return;
 	}
@@ -499,8 +493,6 @@ void reajustar(arvore *raiz, arvore elemento){
 		 cor(irmao(elemento)) == VERMELHO &&
 		 cor(irmao(elemento)->dir) == PRETO &&
 		 cor(irmao(elemento)->esq) == PRETO ) {
-			 printf("CASO 2\n");
-				//printf("cor %d\n",cor(irmao(elemento)));
                 //Verifica se é o caso 2 esquerdo ou direito
 				if(eh_filho_esquerdo(elemento)){
 						rotacao_simples_esquerda(raiz, elemento->pai);
@@ -521,9 +513,6 @@ void reajustar(arvore *raiz, arvore elemento){
 	 cor(irmao(elemento)) == PRETO && 
 	 cor(irmao(elemento)->dir) == PRETO &&
 	 cor(irmao(elemento)->esq) == PRETO ) {
-		 printf("CASO 3\n");
-			//printf("cor %d\n",cor(irmao(elemento)));
-			//imprimir(elemento);
 		 if(eh_filho_esquerdo(elemento)){
 			 elemento->pai->dir->cor = VERMELHO;
 			 elemento->pai->cor = DUPLO_PRETO;
@@ -546,7 +535,6 @@ void reajustar(arvore *raiz, arvore elemento){
 	cor(irmao(elemento)) == PRETO &&
 	cor(irmao(elemento)->dir) == PRETO &&
 	cor(irmao(elemento)->esq) == PRETO){
-		printf("CASO 4\n");
 		if(eh_filho_esquerdo(elemento)){
 			elemento->pai->dir->cor = VERMELHO;
 			elemento->pai->cor = PRETO;
@@ -564,7 +552,6 @@ void reajustar(arvore *raiz, arvore elemento){
 	if(cor(elemento->pai->dir) == PRETO &&
 	cor(irmao(elemento)->dir) == PRETO &&
 	cor(irmao(elemento)->esq) == VERMELHO){
-		printf("CASO 5a\n");
 		arvore p,s,x,y;
 		//inicializar
 		p = elemento->pai;
@@ -590,7 +577,6 @@ void reajustar(arvore *raiz, arvore elemento){
 	if(cor(elemento->pai->esq) == PRETO &&
 	cor(irmao(elemento)->dir) == VERMELHO &&
 	cor(irmao(elemento)->esq) == PRETO){
-		printf("CASO 5B\n");
 		arvore p,s,x;
 		//inicializar
 		p = elemento->pai;
@@ -610,11 +596,9 @@ void reajustar(arvore *raiz, arvore elemento){
 		reajustar(raiz, elemento);
 		return;
 	}
-
 	//caso 6a
 	if(cor(elemento->pai->dir) == PRETO &&
 	cor(irmao(elemento)->dir) == VERMELHO){
-		printf("CASO6A\n");
 		arvore p,s,x,y;
 		//inicialização
 		p = elemento->pai;
@@ -652,11 +636,9 @@ void reajustar(arvore *raiz, arvore elemento){
 		retira_duplo_preto(raiz,elemento);
 		return;
 	}
-
 	//caso 6b
 	if(cor(elemento->pai->esq) == PRETO &&
 	cor(irmao(elemento)->esq) == VERMELHO){
-		printf("CASO6A\n");
 		arvore p,s,x,y;
 		//inicializando
 		p = elemento->pai;
@@ -694,9 +676,7 @@ void reajustar(arvore *raiz, arvore elemento){
 		return;
 	}
 }
-
 void retira_duplo_preto(arvore *raiz, arvore elemento) {
-	printf("retira duplo preto\n");
 			if(elemento == no_null)
 				if(eh_filho_esquerdo(elemento))
 						elemento->pai->esq = NULL;
