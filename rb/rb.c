@@ -413,11 +413,14 @@ void remover (int valor, arvore *raiz) {
 					//Se for vermelho, apenas remove atualizando o ponteiro 
 					//correspondente do pai
 					if(posicao->cor == VERMELHO) {
-							if(eh_filho_esquerdo(posicao))
+							if(eh_filho_esquerdo(posicao)){
 								posicao->pai->esq = NULL;
-							else
+								break;
+							}
+							else{
 								posicao->pai->dir = NULL;
-							break;
+								break;
+							}
 					} else {
 							//Se o elemento for preto, substitui pelo duplo preto e depois ajusta a árvore
 							no_null->pai = posicao->pai;
@@ -438,6 +441,7 @@ void remover (int valor, arvore *raiz) {
 				//O elemento possui apenas um filho (direito)
 				if(posicao->esq == NULL) {
 					posicao->dir->cor = PRETO;
+					posicao->dir->pai = posicao->pai;
 					if(eh_raiz(posicao)) {
 						*raiz = posicao->dir;
 					} else {
@@ -454,6 +458,7 @@ void remover (int valor, arvore *raiz) {
 				//O elemento possui apenas um filho (esquerdo)
 				if(posicao->dir == NULL) {
 					posicao->esq->cor = PRETO;
+					posicao->esq->pai = posicao->pai;
 					if(eh_raiz(posicao)) {
 						*raiz = posicao->esq;
 					} else {
