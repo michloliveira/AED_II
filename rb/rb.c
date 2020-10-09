@@ -568,6 +568,9 @@ void reajustar(arvore *raiz, arvore elemento){
 		x->dir = s;
 		p->dir = x;
 		//set pai
+				if(s->esq!=NULL){
+			s->esq->pai = s;
+		}
 		x->pai = p; ////////////!!!!!!!!
 		s->pai = x;
 		//recolorir
@@ -592,6 +595,9 @@ void reajustar(arvore *raiz, arvore elemento){
 		p->esq = x;
 		x->esq = s;
 		//set pai
+				if(s->dir!=NULL){
+			s->dir->pai = s;
+		}
 		x->pai = p;
 		s->pai = x;
 		//recolorir
