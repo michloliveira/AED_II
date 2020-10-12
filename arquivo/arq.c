@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdio_ext.h>
 #include <stdlib.h>
-#include "bst.h"
+#include "arq.h"
 #include <string.h>
 
 

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "bst.h"
+#include "arq.h"
 
 int main(int argc, char * argv[]) {
 	tabela tab;
@@ -19,10 +19,10 @@ int main(int argc, char * argv[]) {
 						adicionarLivro(&tab, ler_dados());
 						break;
 				case 3:
-						printf("%d\n", maior_elemento(tab.indices));
+						//printf("%d\n", maior_elemento(tab.indices));
 						break;
 				case 4:
-						printf("%d\n", menor_elemento(tab.indices));
+						//printf("%d\n", menor_elemento(tab.indices));
 						break;
 				case 5:
 						pre_order(tab.indices, &tab);
