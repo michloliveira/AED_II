@@ -1,5 +1,5 @@
-#ifndef ARQ_H
-#define ARQ_H
+#ifndef BST_H
+#define BST_H
 
 typedef struct livro {
 	char titulo[81];
@@ -33,11 +33,7 @@ void adicionarLivro(tabela *tab, dado *livro);
 
 void inicializar(arvore *raiz);
 arvore adicionar (tipo_dado *valor, arvore raiz);
-arvore rotacionar(arvore raiz);
-arvore rotacao_simples_direita(arvore raiz);
-arvore rotacao_simples_esquerda(arvore raiz);
-arvore rotacao_dupla_direita(arvore raiz);
-arvore rotacao_dupla_esquerda(arvore raiz);
+
 int altura(arvore raiz);
 int maior(int a, int b);
 tipo_dado * maior_elemento(arvore raiz);

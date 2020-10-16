@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdio_ext.h>
 #include <stdlib.h>
-#include "arq.h"
+#include "bst.h"
 #include <string.h>
 
 
@@ -34,6 +34,7 @@ void adicionarLivro(tabela *tab, dado *livro){
 
 			fwrite(livro, sizeof(dado), 1, tab->arquivo_dados);
 			tab->indices = adicionar(novo, tab->indices);
+			//salvar_arquivo("indices.dat", tab->indices);
 	}
 }
 
@@ -119,28 +120,6 @@ void imprimir_elemento(arvore raiz, tabela * tab) {
 	free(temp);
 }
 
-arvore remover (int valor, arvore raiz) {
-	if(raiz == NULL) 
-		return NULL;
-	
-	if(raiz->dado->chave == valor) {		
-		if(raiz->esq == NULL) {
-			return raiz->dir;
-		}
-		if(raiz->dir == NULL) {
-			return raiz->esq;
-		}
-		raiz->dado = maior_elemento(raiz->esq);
-		raiz->esq = remover(raiz->dado->chave, raiz->esq);
-		return raiz;
-	}	
-	if(valor > raiz->dado->chave) {
-			raiz->dir = remover(valor, raiz->dir);
-	} else {
-			raiz->esq = remover(valor, raiz->esq);
-	}
-	return raiz;
-}
 
 dado * ler_dados() {
 	dado *novo = (dado *) malloc(sizeof(dado));
@@ -169,8 +148,10 @@ void salvar_arquivo(char *nome, arvore a) {
 	arq = fopen(nome, "wb");
 	if(arq != NULL) {
 		salvar_auxiliar(a, arq);
-		fclose(arq);
+		
 	}
+	fclose(arq);
+	
 }
 
 void salvar_auxiliar(arvore raiz, FILE *arq){
@@ -184,13 +165,13 @@ void salvar_auxiliar(arvore raiz, FILE *arq){
 
 arvore carregar_arquivo(char *nome, arvore a) {
 	FILE *arq;
-	arq = fopen(nome, "rb");
+	arq = fopen(nome, "rb");//mudei aqui
 	tipo_dado * temp;
 	if(arq != NULL) {
 		temp = (tipo_dado *) malloc(sizeof(tipo_dado));
-		while(fread(temp, sizeof(tipo_dado), 1, arq)) {
-			
-			a = adicionar(temp, a);			
+		while(fread(temp, sizeof(tipo_dado), 1, arq)) { //(buffer,tamanho do arquivo a ser lido, quantas vezes vai ser lido, e o aquivo para ser lido)
+			a = adicionar(temp, a);
+			printf("%d\n",temp->chave);
 			temp = (tipo_dado *) malloc(sizeof(tipo_dado));
 
 		}
