@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdio_ext.h>
 #include <stdlib.h>
-#include "bst.h"
+#include "arq.h"
 #include <string.h>
 
 
@@ -26,6 +26,7 @@ void finalizar (tabela *tab) {
 
 void adicionarLivro(tabela *tab, dado *livro){
 	if(tab->arquivo_dados != NULL) {
+			int cresceu;
 			fseek(tab->arquivo_dados, 0L, SEEK_END);
 			tipo_dado * novo = (tipo_dado *) malloc(sizeof(tipo_dado));
 			novo->chave = livro->codigo;
@@ -33,13 +34,66 @@ void adicionarLivro(tabela *tab, dado *livro){
 			//strcat(char aux[],livro->codigo)							//strcat(string_destino, string_origem);
 			//fwrite(livro, sizeof(dado), 1, tab->arquivo_dados);
 			fprintf(tab->arquivo_dados,"%d|%s|%s|%s\n",livro->codigo,livro->titulo,livro->autor,livro->isbn);
-			tab->indices = adicionar(novo, tab->indices);
+			tab->indices = adicionar(novo, tab->indices,&cresceu);
 			//salvar_arquivo("indices.dat", tab->indices);
 	}
 }
 
+arvore adicionar (tipo_dado *valor, arvore raiz, int *cresceu) {
+	if(raiz == NULL) {
+		arvore novo = (arvore) malloc(sizeof(struct no_avl));
+		novo->dado = valor;
+		novo->esq = NULL;
+		novo->dir = NULL;
+		novo->fb = 0;
+	  * cresceu = 1; 
+		return novo;
+	}
+	if(valor->chave > raiz->dado->chave) {
+		raiz->dir = adicionar(valor, raiz->dir, cresceu);
+        if(*cresceu) {
+			switch(raiz->fb) {
+				case 0:
+					raiz->fb = 1;
+                    *cresceu = 1;
+					break;
+			    case -1:
+					raiz->fb = 0;
+					*cresceu = 0;
+					break;
+				case 1:
+					*cresceu = 0;
+					return rotacionar(raiz);
+			}
+		}
 
-arvore adicionar (tipo_dado *valor, arvore raiz) {
+	} else {
+	   raiz->esq = adicionar(valor,raiz->esq,cresceu);
+	   if(*cresceu){
+		   switch(raiz->fb){
+			   case 0:
+			   		raiz->fb = -1;
+					*cresceu = 1;
+					break;
+			   case -1:
+					*cresceu = 0;
+					return rotacionar(raiz);
+					break;
+			   case 1:
+			   		raiz->fb = 0;
+					*cresceu = 0;
+					break;
+
+		   }
+	   }
+	}
+	return raiz;
+}
+/*arvore adicionar (tipo_dado *valor, arvore raiz) {
+	
+	
+	
+	
 	if(raiz == NULL) {
 		arvore novo = (arvore) malloc(sizeof(struct no_bst));
 		novo->dado = valor;
@@ -54,8 +108,137 @@ arvore adicionar (tipo_dado *valor, arvore raiz) {
 		raiz->esq = adicionar(valor, raiz->esq);
 	}
 	return raiz;
+}*/
+arvore rotacionar(arvore raiz) {
+    //fb maior que zero => rotação esquerda
+	if(raiz->fb > 0) {
+		switch(raiz->dir->fb) {
+            //o zero "conta" como rotação simples. 
+            //Só ocorre no remover
+			case 0:
+			case 1:
+				return rotacao_simples_esquerda(raiz);
+			case -1:
+				return rotacao_dupla_esquerda(raiz);					
+			} 
+	} else {
+    //implementar o simétrico
+		switch(raiz->esq->fb){
+			case 0:
+			case -1:
+				return rotacao_simples_direita(raiz); //falta implementar
+			case 1:
+				return rotacao_dupla_direita(raiz);
+		}
+	}
+}
+arvore rotacao_simples_esquerda(arvore raiz) {
+	arvore p, u, t1, t2, t3;
+    //inicializa os ponteiros
+	p = raiz;
+	u = raiz->dir;
+    t1 = p->esq;
+    //t2 e t3 não estão sendo modificados. 
+    //só estão aqui por questões didáticas
+    t2 = u->esq;
+    t3 = u->dir;
+
+    //Atualiza os ponteiros
+	u->esq = p;
+	p->dir = t2;
+	/*u->dir = t1;
+	p->dir = t1;*/
+    
+    //Atualiza os fatores de balanço de acordo com o fb de u
+    //Esses valores vieram dos cálculos demonstrados na aula
+	if(u->fb == 1) {
+		p->fb = 0;
+		u->fb = 0;
+	} else {
+		p->fb = 1;
+		u->fb = -1;
+	}	
+    
+    //Retorna a raiz da sub-árvore resultante, ou seja "u".
+	return u;
 }
 
+arvore rotacao_dupla_esquerda(arvore raiz) {
+	arvore p,u,v;
+	p = raiz;
+	u = p->dir;
+	v = u->esq;
+	u->esq = v->dir;
+	v->dir = u;
+	p->dir = v->esq;
+	v->esq = p;
+	if(v->fb == 0){ //todos possuem subArvore
+		p->fb = 0;		   
+		u->fb = 0;	
+		v->fb = 0;	
+	}
+	else if(v->fb == 1){ // subArvore dir de p vazia
+		p->fb = -1;
+		u->fb = 0;
+		v->fb = 0;
+	}
+	else{ //subArvore esq de u vazia
+		u->fb = 1;
+		p->fb = 0;
+		v->fb = 0;
+	}
+	return v;
+}
+
+arvore rotacao_simples_direita(arvore raiz) {
+	arvore p,u,t1 ,t2,t3;
+	//inicializar os ponteiros
+	p = raiz;
+	u = raiz->esq;
+	t1 = p->dir;
+	t2 = u->dir;
+	t3 = u->esq;
+	//atualiza ponteiros
+	u->dir = p;
+	p->esq = t2;
+	//falta atualizar FB
+	if(u->fb == -1) {
+		p->fb = 0;
+		u->fb = 0;
+	} else {
+		p->fb = -1;
+		u->fb = 1;
+	}	
+
+	return u;
+}
+arvore rotacao_dupla_direita(arvore raiz) {
+	arvore p,u,v;
+	p = raiz;
+	u = p->esq;
+	v = u->dir;
+	u->dir = v->esq;
+	v->esq = u;
+	p->esq = v->dir;
+	v->dir = p;
+	if(v->fb == 0){
+		u->fb = 0;
+		p->fb = 0;
+		v->fb = 0;
+	}
+	else if(v->fb == 1){
+		u->fb = -1;
+		v->fb = 0;
+		p->fb = 0;
+	}
+	else{
+		p->fb = 1;
+		v->fb = 0;
+		u->fb = 0;
+	}
+	return v;
+}
+//-------------------------------------------
 int altura(arvore raiz) {
 	if(raiz == NULL) {
 		return 0;
@@ -109,6 +292,15 @@ void in_order(arvore raiz, tabela *tab) {
 		in_order(raiz->esq, tab);
 		imprimir_elemento(raiz, tab);
 		in_order(raiz->dir, tab);
+	}
+}
+void buscar(int valor,arvore raiz, tabela *tab) {
+	if(raiz != NULL) {
+		buscar(valor,raiz->esq, tab);
+		if(valor == raiz->dado->chave){
+			imprimir_elemento(raiz, tab);
+		}
+		buscar(valor,raiz->dir, tab);
 	}
 }
 
@@ -205,11 +397,12 @@ arvore carregar_arquivo(char *nome, arvore a) {
 	FILE *arq;
 	arq = fopen(nome, "rb");
 	tipo_dado * temp;
+	int cresceu;
 	if(arq != NULL) {
 		temp = (tipo_dado *) malloc(sizeof(tipo_dado));
 		while(fread(temp, sizeof(tipo_dado), 1, arq)) { //(buffer,tamanho do arquivo a ser lido, quantas vezes vai ser lido, e o aquivo para ser lido)
 			
-			a = adicionar(temp, a);			
+			a = adicionar(temp, a,&cresceu);			
 			temp = (tipo_dado *) malloc(sizeof(tipo_dado));
 
 		}
