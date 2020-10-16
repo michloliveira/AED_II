@@ -11,7 +11,7 @@ void inicializar(arvore *raiz) {
 
 int inicializarTabela(tabela *tab) {
 	inicializar(&tab->indices);	
-	tab->arquivo_dados = fopen("dados.dat", "a+b");
+	tab->arquivo_dados = fopen("dados.dat", "a+");
 	tab->indices = carregar_arquivo("indices.dat", tab->indices);
 	if(tab->arquivo_dados != NULL)
 		return 1;
@@ -27,12 +27,12 @@ void finalizar (tabela *tab) {
 void adicionarLivro(tabela *tab, dado *livro){
 	if(tab->arquivo_dados != NULL) {
 			fseek(tab->arquivo_dados, 0L, SEEK_END);
-
 			tipo_dado * novo = (tipo_dado *) malloc(sizeof(tipo_dado));
 			novo->chave = livro->codigo;
 			novo->indice = ftell(tab->arquivo_dados);
-
-			fwrite(livro, sizeof(dado), 1, tab->arquivo_dados);
+			//strcat(char aux[],livro->codigo)							//strcat(string_destino, string_origem);
+			//fwrite(livro, sizeof(dado), 1, tab->arquivo_dados);
+			fprintf(tab->arquivo_dados,"%d|%s|%s|%s\n",livro->codigo,livro->titulo,livro->autor,livro->isbn);
 			tab->indices = adicionar(novo, tab->indices);
 			//salvar_arquivo("indices.dat", tab->indices);
 	}
@@ -113,15 +113,27 @@ void in_order(arvore raiz, tabela *tab) {
 }
 
 void imprimir_elemento(arvore raiz, tabela * tab) {
-	dado * temp = (dado *) malloc (sizeof(dado));
+	//dado * temp = (dado *) malloc (sizeof(dado));
 	fseek(tab->arquivo_dados, raiz->dado->indice, SEEK_SET);
-	fread(temp, sizeof(dado), 1, tab->arquivo_dados);
-	printf("[%d, %s, %s, %s ]\n", raiz->dado->chave, temp->titulo, temp->autor, temp->isbn);
-	free(temp);
+	char * buffer = (char *) malloc(256 * sizeof(char));
+	char *aux;
+	fscanf(tab->arquivo_dados," %[^\n]s",buffer); //ler o arquivo
+	aux = strtok(buffer,"|"); //divide o arquivo e adiciona em um char auxiliar
+	while(aux != NULL){ //continua dividindo e exibindo os dados
+		printf("%s",aux);
+		aux = strtok(NULL,"|");
+		if(aux != NULL){
+			printf(",");
+		}
+	}
+	printf("\n");
+	free(buffer);
+	free(aux);
+
 }
 
 
-dado * ler_dados() {
+/*dado * ler_dados() {
 	dado *novo = (dado *) malloc(sizeof(dado));
 	//__fpurge(stdin);
 	getchar();
@@ -136,6 +148,32 @@ dado * ler_dados() {
 	tirar_enter(novo->isbn);
 	printf("Codigo: ");
 	scanf("%d", &novo->codigo);
+	return novo;
+}*/
+dado * ler_dados() {
+	dado *novo = (dado *) malloc(sizeof(dado));
+	char * buffer = (char *) malloc(256 * sizeof(char));
+
+	getchar() ;
+	printf("Titulo: ");
+	fgets(buffer, 255,  stdin);
+	tirar_enter(buffer);
+	novo->titulo = strdup(buffer);
+
+	printf("Autor: ");
+	fgets(buffer, 255,  stdin);
+	tirar_enter(buffer);
+	novo->autor = strdup(buffer);
+
+	printf("Isbn: ");
+	fgets(buffer, 255,  stdin);
+	tirar_enter(buffer);
+	novo->isbn = strdup(buffer);
+
+	printf("Codigo: ");
+	scanf("%d", &novo->codigo);
+	free(buffer);
+
 	return novo;
 }
 

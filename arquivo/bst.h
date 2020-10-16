@@ -2,9 +2,9 @@
 #define BST_H
 
 typedef struct livro {
-	char titulo[81];
-	char autor[51];
-	char isbn[21];
+	char * titulo;
+	char * autor;
+	char * isbn;
 	int codigo;
 } dado;
 
