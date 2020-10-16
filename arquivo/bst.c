@@ -203,13 +203,13 @@ void salvar_auxiliar(arvore raiz, FILE *arq){
 
 arvore carregar_arquivo(char *nome, arvore a) {
 	FILE *arq;
-	arq = fopen(nome, "rb");//mudei aqui
+	arq = fopen(nome, "rb");
 	tipo_dado * temp;
 	if(arq != NULL) {
 		temp = (tipo_dado *) malloc(sizeof(tipo_dado));
 		while(fread(temp, sizeof(tipo_dado), 1, arq)) { //(buffer,tamanho do arquivo a ser lido, quantas vezes vai ser lido, e o aquivo para ser lido)
-			a = adicionar(temp, a);
-			printf("%d\n",temp->chave);
+			
+			a = adicionar(temp, a);			
 			temp = (tipo_dado *) malloc(sizeof(tipo_dado));
 
 		}
