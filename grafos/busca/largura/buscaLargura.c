@@ -6,41 +6,40 @@
 void gerarMatriz(int m, grafo *graf){
     int **mat;
 
-    mat = (int**) malloc(m * sizeof(int*)); // colunas
-
+    mat = (int**) malloc(m * sizeof(int*)); // alocando colunas
     for(int i = 0; i < m; i++){
-        mat[i] = (int*) malloc(m * sizeof(int)); //linhas
+        mat[i] = (int*) malloc(m * sizeof(int)); //alocando linhas
     }
     graf->matriz = mat;
 
-    for(int i = 0; i < m; i++){
+    for(int i = 0; i < m; i++){ //inicializando matriz com 0
         for(int j = 0; j < m; j++){
-            if(i == j){ //caso os valores sejam o mesmo, colocar 1, para ter a linha diagrafonal na matriz
+            if(i == j){ // 1 sse i == j
                 graf->matriz[i][j] = 1; 
             }
-            else{ //senãao, atribuir tudo a 0
+            else{
                 graf->matriz[i][j] = 0;
             }
         }
     }
     return;
 }
-void imprimirMatriz(int m, grafo *graf){
-    printf("MATRIZ:\n ");
+void imprimeMatriz(int m, grafo *graf){
+    printf("----------MATRIZ----------\n ");
     printf(" ");
-    for(int k = 0; k <  m; k++){ //printar a primeira com os valores dos vertices
-        printf("%c ",graf->mapa[k]);
+    for(int k = 0; k <  m; k++){ //nome dos vertices
+        printf("%c ",graf->map[k]);
     }
     printf("\n");
-    for(int i = 0; i < m; i++){ // printar o restante da matriz
-        printf("%c ",graf->mapa[i]);
+    for(int i = 0; i < m; i++){
+        printf("%c ",graf->map[i]);
         for(int j = 0; j < m; j++){
             printf("%d ", graf->matriz[i][j]);
         }
         printf("\n");
     }
 }
-void lerArquivo(grafo *graf, char* nome_arq){
+void lerArq(grafo *graf, char* nome_arq){
 
     FILE *arq;
     arq = fopen(nome_arq, "r"); 
@@ -58,29 +57,27 @@ void lerArquivo(grafo *graf, char* nome_arq){
     }
     graf->vertices = atoi(vertices);
     graf->arestas = atoi(arestas);
-    strcpy(graf->mapa , lista);
-
+    strcpy(graf->map , lista);
     gerarMatriz(atoi(vertices), graf);
-
     char aux[20];
-    while(fgets(aux, 19, arq) != NULL){ //lendo o restante do arquivo até ele ser NULL :: fgets recebe o nome do auxiliar que vai receber a str, o tamanho dessa str, e de que arquivo
 
-        int aux1, aux2;    //criando variáveis para colocar os valores que representam o indice do que está na lista
+    while(fgets(aux, 19, arq) != NULL){
+        int aux1, aux2;
 
-        for(int i = 0; i < sizeof(lista); i++){ //percorrendo a lista com os vertices
-            if(aux[0] == lista[i]){ //verificando se o aux[0], no caso o primeiro caractere da linha, é igual a algum da lista
-                aux1 = i; //e pego o seu indice
+        for(int i = 0; i < sizeof(lista); i++){ 
+            if(aux[0] == lista[i]){
+                aux1 = i; 
             }
-            if(aux[1] == lista[i]){ //verificando se o aux[1], no caso o segundo caractere da linha, é igual a algum da lista
+            if(aux[1] == lista[i]){
                 aux2 = i;
             }            
         }
-        inserirMatriz(aux1, aux2, graf);     
+        insereMatriz(aux1, aux2, graf);     
     }
     fclose(arq);
-    imprimirMatriz(graf->vertices, graf);
+    imprimeMatriz(graf->vertices, graf);
 }
-void inserirMatriz(int aux1, int aux2, grafo *graf){
+void insereMatriz(int aux1, int aux2, grafo *graf){
 
     for(int i = 0; i < graf->vertices; i++){
         for(int j = 0; j < graf->vertices; j++){
@@ -99,20 +96,20 @@ fila* push(fila *fila,char v){
     struct fila *aux = fila;
     if(aux == NULL){
         struct fila *novo = malloc(sizeof(fila));
-        novo->vertice = v;
+        novo->v = v;
         novo->prox = NULL;
         return novo;
     }
     else{
         struct fila *novo = malloc(sizeof(fila));
-        novo->vertice = v;
+        novo->v = v;
         novo->prox = fila;
         return novo;
     }
 }
 fila* pop(fila *fila){
     if(fila != NULL){
-        char v = fila->vertice;
+        char v = fila->v;
         if(fila->prox != NULL){
             fila = fila->prox;
         }
@@ -132,8 +129,8 @@ void buscaLargura(grafo *graf, char origem){
     }
 
     for(int i = 0; i < graf->vertices; i++){ //busca início
-        if(origem == graf->mapa[i]){
-            f = push(f, graf->mapa[i]);//enfileirando origem graf->mapa[i]
+        if(origem == graf->map[i]){
+            f = push(f, graf->map[i]);//enfileirando origem graf->map[i]
             visitado[i] = 1; //visitado[i] = 1; 
             break;            
         }
@@ -141,28 +138,28 @@ void buscaLargura(grafo *graf, char origem){
 
 
     while(f != NULL){  //<-------
-        char nomeVertice = f->vertice;
+        char nomeVertice = f->v;
         f = pop(f); //pop
         for(int i = 0; i < graf->vertices; i++){ //busca o caractere da lista
-            if(nomeVertice == graf->mapa[i]){ 
+            if(nomeVertice == graf->map[i]){ 
                 // busca adjacentes----------------------------------------
                 for(int j = 0; j < graf->vertices ; j++){
                     if(graf->matriz[i][j] == 1 && j != i ){                        
 
                         if(visitado[j] == 0){
-                            adjacentes = push(adjacentes, graf->mapa[j]);
+                            adjacentes = push(adjacentes, graf->map[j]);
                         }                                                    
                     }
                 }
             }
         }         
         while(adjacentes != NULL){ //o vetor de não visitados não estiver vazio
-            char adjVertice = adjacentes->vertice;
+            char adjVertice = adjacentes->v;
             adjacentes = pop(adjacentes);
             for(int i = 0; i < graf->vertices; i++){ //busca vertice
-                if(adjVertice == graf->mapa[i]){
+                if(adjVertice == graf->map[i]){
                     if(visitado[i] == 0){
-                        f = push(f,graf->mapa[i]);//enfileirando adjvert
+                        f = push(f,graf->map[i]);//enfileirando adjvert
                         printf(" -> %c", adjVertice);
                         visitado[i] = 1; //visitado[i] = 1;
                     }                    

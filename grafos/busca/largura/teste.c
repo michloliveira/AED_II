@@ -5,7 +5,7 @@
 int main(int argc, char *argv[]){
     grafo g;
     char origem;
-    lerArquivo(&g, "arquivo");
+    lerArq(&g, "arquivo");
     printf("Insira a origem: ");
     scanf("%c", &origem);
     buscaLargura(&g, origem);

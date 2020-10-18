@@ -8,14 +8,14 @@
 
 typedef struct grafo{
     int **matriz;
+    char map[SIZE];
     int vertices; 
 	int arestas;
-    char mapa[SIZE];
 }grafo;
 
 
 typedef struct fila{
-	char vertice;
+	char v;
 	struct fila *prox;
 }fila;
 
@@ -24,11 +24,9 @@ fila* pop (fila *fila);
 
 
 void gerarMatriz(int m, grafo *graf);
-void imprimirMatriz(int v, grafo *graf);
-void lerArquivo(grafo *g, char* nome_arq);
-void inserirMatriz(int aux1, int aux2, grafo *graf);
-
-//int procurarInicio(grafo *g, char letraV);
+void imprimeMatriz(int v, grafo *graf);
+void lerArq(grafo *g, char* nome_arq);
+void insereMatriz(int aux1, int aux2, grafo *graf);
 void buscaLargura(grafo *g,char origem);
 
 #endif
