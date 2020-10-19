@@ -42,40 +42,46 @@ void imprimeMatriz(int m, grafo *graf){
 void lerArq(grafo *graf, char* nome_arq){
 
     FILE *arq;
-    arq = fopen(nome_arq, "r"); 
-    char buffer[20];
-    fgets(buffer, 19, arq);
-    char *vertices = strtok(buffer," "); //divide a string por espaço
-    char *arestas = strtok(NULL, "\n"); //limpa a buffer ler até o \n
+    arq = fopen(nome_arq, "r");
+    if(arq != NULL){
+        char buffer[20];
+        fgets(buffer, 19, arq);
+        char *vertices = strtok(buffer," "); //divide a string por espaço
+        char *arestas = strtok(NULL, "\n"); //limpa a buffer ler até o \n
 
-    char lista[atoi(vertices)];
-    for(int i = 0; i < sizeof(lista); i++){ // adicionar na lista de vertices
-        fscanf(arq,"%c",&lista[i]);
-        if(lista[i] == '\n'){
-            i--;
-        } 
-    }
-    graf->vertices = atoi(vertices);
-    graf->arestas = atoi(arestas);
-    strcpy(graf->map , lista);
-    gerarMatriz(atoi(vertices), graf);
-    char aux[20];
-
-    while(fgets(aux, 19, arq) != NULL){
-        int aux1, aux2;
-
-        for(int i = 0; i < sizeof(lista); i++){ 
-            if(aux[0] == lista[i]){
-                aux1 = i; 
-            }
-            if(aux[1] == lista[i]){
-                aux2 = i;
-            }            
+        char lista[atoi(vertices)];
+        for(int i = 0; i < sizeof(lista); i++){ // adicionar na lista de vertices
+            fscanf(arq,"%c",&lista[i]);
+            if(lista[i] == '\n'){
+                i--;
+            } 
         }
-        insereMatriz(aux1, aux2, graf);     
+        graf->vertices = atoi(vertices);
+        graf->arestas = atoi(arestas);
+        strcpy(graf->map , lista);
+        gerarMatriz(atoi(vertices), graf);
+        char aux[20];
+
+        while(fgets(aux, 19, arq) != NULL){
+            int aux1, aux2;
+
+            for(int i = 0; i < sizeof(lista); i++){ 
+                if(aux[0] == lista[i]){
+                    aux1 = i; 
+                }
+                if(aux[1] == lista[i]){
+                    aux2 = i;
+                }            
+            }
+            insereMatriz(aux1, aux2, graf);     
+        }
+        fclose(arq);
+        imprimeMatriz(graf->vertices, graf);
     }
-    fclose(arq);
-    imprimeMatriz(graf->vertices, graf);
+    else{
+        printf("Arquivo de leitura inexistente!\n");
+        exit(0);
+    }
 }
 void insereMatriz(int aux1, int aux2, grafo *graf){
 
