@@ -126,7 +126,7 @@ arvore rotacionar(arvore raiz) {
 		switch(raiz->esq->fb){
 			case 0:
 			case -1:
-				return rotacao_simples_direita(raiz); //falta implementar
+				return rotacao_simples_direita(raiz);
 			case 1:
 				return rotacao_dupla_direita(raiz);
 		}
@@ -324,24 +324,6 @@ void imprimir_elemento(arvore raiz, tabela * tab) {
 
 }
 
-
-/*dado * ler_dados() {
-	dado *novo = (dado *) malloc(sizeof(dado));
-	//__fpurge(stdin);
-	getchar();
-	printf("Titulo: ");
-	fgets(novo->titulo, 80,  stdin);
-	tirar_enter(novo->titulo);
-	printf("Autor: ");
-	fgets(novo->autor, 50,  stdin);
-	tirar_enter(novo->autor);
-	printf("Isbn: ");
-	fgets(novo->isbn, 20,  stdin);
-	tirar_enter(novo->isbn);
-	printf("Codigo: ");
-	scanf("%d", &novo->codigo);
-	return novo;
-}*/
 dado * ler_dados() {
 	dado *novo = (dado *) malloc(sizeof(dado));
 	char * buffer = (char *) malloc(256 * sizeof(char));

@@ -18,10 +18,6 @@ typedef struct no_avl {
 	int fb;
 	struct no_avl *esq, *dir;
 } no_avl;
-/*typedef struct no_bst {
-	tipo_dado *dado;
-	struct no_bst *esq, *dir;
-} no_bst;*/
 
 typedef no_avl * arvore;
 
@@ -59,8 +55,6 @@ arvore rotacao_simples_direita(arvore raiz);
 arvore rotacao_simples_esquerda(arvore raiz);
 arvore rotacao_dupla_direita(arvore raiz);
 arvore rotacao_dupla_esquerda(arvore raiz);
-
-
 
 
 #endif

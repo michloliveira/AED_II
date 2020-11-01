@@ -27,7 +27,7 @@ void gerarMatriz(int m, grafo *graf){
 void imprimeMatriz(int m, grafo *graf){
     printf("----------MATRIZ----------\n ");
     printf(" ");
-    for(int k = 0; k <  m; k++){ //nome dos vertices
+    for(int k = 0; k <  m; k++){ 
         printf("%c ",graf->map[k]);
     }
     printf("\n");
@@ -46,11 +46,11 @@ void lerArq(grafo *graf, char* nome_arq){
     if(arq != NULL){
         char buffer[20];
         fgets(buffer, 19, arq);
-        char *vertices = strtok(buffer," "); //divide a string por espaço
-        char *arestas = strtok(NULL, "\n"); //limpa a buffer ler até o \n
+        char *vertices = strtok(buffer," "); 
+        char *arestas = strtok(NULL, "\n"); 
 
         char lista[atoi(vertices)];
-        for(int i = 0; i < sizeof(lista); i++){ // adicionar na lista de vertices
+        for(int i = 0; i < sizeof(lista); i++){ // add vertices
             fscanf(arq,"%c",&lista[i]);
             if(lista[i] == '\n'){
                 i--;
@@ -87,10 +87,10 @@ void insereMatriz(int aux1, int aux2, grafo *graf){
 
     for(int i = 0; i < graf->vertices; i++){
         for(int j = 0; j < graf->vertices; j++){
-            if(i == aux1 && j == aux2){ //Comparando para ver se o i é igual o valor que está em aux
+            if(i == aux1 && j == aux2){ 
                 graf->matriz[i][j] = 1;
             }
-            if(j == aux1 && i == aux2){ //o inverso
+            if(j == aux1 && i == aux2){ 
                 graf->matriz[i][j] = 1;
             }
         }
@@ -126,7 +126,7 @@ fila* pop(fila *fila){
     }
 }
 void buscaLargura(grafo *graf, char origem){
-    fila *f = NULL; //inicializado filas com NULL
+    fila *f = NULL; //init filas
     fila *adjacentes = NULL;
     int tam = graf->vertices;
     int visitado[tam]; 
@@ -134,21 +134,21 @@ void buscaLargura(grafo *graf, char origem){
         visitado[i] = 0; 
     }
 
-    for(int i = 0; i < graf->vertices; i++){ //busca início
+    for(int i = 0; i < graf->vertices; i++){ //Procurar início
         if(origem == graf->map[i]){
-            f = push(f, graf->map[i]);//enfileirando origem graf->map[i]
+            f = push(f, graf->map[i]);
             visitado[i] = 1; //visitado[i] = 1; 
             break;            
         }
     }    
 
 
-    while(f != NULL){  //<-------
+    while(f != NULL){  
         char nomeVertice = f->v;
-        f = pop(f); //pop
-        for(int i = 0; i < graf->vertices; i++){ //busca o caractere da lista
+        f = pop(f); 
+        for(int i = 0; i < graf->vertices; i++){ //busca o caractere
             if(nomeVertice == graf->map[i]){ 
-                // busca adjacentes----------------------------------------
+                // busca os adjacentes
                 for(int j = 0; j < graf->vertices ; j++){
                     if(graf->matriz[i][j] == 1 && j != i ){                        
 
@@ -159,13 +159,13 @@ void buscaLargura(grafo *graf, char origem){
                 }
             }
         }         
-        while(adjacentes != NULL){ //o vetor de não visitados não estiver vazio
+        while(adjacentes != NULL){ 
             char adjVertice = adjacentes->v;
             adjacentes = pop(adjacentes);
             for(int i = 0; i < graf->vertices; i++){ //busca vertice
                 if(adjVertice == graf->map[i]){
                     if(visitado[i] == 0){
-                        f = push(f,graf->map[i]);//enfileirando adjvert
+                        f = push(f,graf->map[i]);
                         printf(" -> %c", adjVertice);
                         visitado[i] = 1; //visitado[i] = 1;
                     }                    

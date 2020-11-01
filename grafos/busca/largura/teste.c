@@ -3,11 +3,11 @@
 #include "buscaLargura.h"
 
 int main(int argc, char *argv[]){
-    grafo g;
+    grafo *g;
     char origem;
-    lerArq(&g, "arquivo");
+    lerArq(g, "arquivo");
     printf("Insira a origem: ");
     scanf("%c", &origem);
-    buscaLargura(&g, origem);
+    buscaLargura(g, origem);
 
 }
