@@ -6,19 +6,7 @@ void inicializar(arvore *raiz) {
 	*raiz = NULL;
 }
 
-/*----------
-Adiciona um novo elemento à árvore e realiza as operações de balanceamento, se necessário
-Parâmetros:
-    valor   - elemento a ser inserido
-    raiz    - raiz da árvore onde o elemento será inserido
-    cresceu - variável de controle que ajuda a calcular o fator de balanço
-
-Retorno:
-    Raiz da árvore resultante da operação de adicionar
---*/
-
 arvore adicionar (int valor, arvore raiz, int *cresceu) {
-    //Caso base da recursão: ou a árvore está vazia ou chegou em uma folha
 	if(raiz == NULL) {
 		arvore novo = (arvore) malloc(sizeof(struct no_avl));
 		novo->dado = valor;
@@ -28,22 +16,9 @@ arvore adicionar (int valor, arvore raiz, int *cresceu) {
 	  * cresceu = 1; 
 		return novo;
 	}
-
-    //Casos recursivos, se a raiz (relativa) não for NULL,        
-    //acrescenta-se o elemento na sub-árvore direita ou esquerda,
-    //dependendo do valor a ser inserido. Elementos maiores vão 
-    //para direita, menores para esquerda.
 	if(valor > raiz->dado) {
-        //Elemento maior => adicionar na direita
 		raiz->dir = adicionar(valor, raiz->dir, cresceu);
-        //Após adicionar o elemento na direita, 
-        //verifica se a sub-árvore da direita cresceu.
-        //Em caso afirmativo, ajusta-se o fator de balanço 
-        //da raiz relativa
         if(*cresceu) {
-            //Chegando neste ponto, sabe se que:
-            //a) O elemento foi inserido na sub-árvore direita; e
-            //b) A sub-árvore a direita cresceu
 			switch(raiz->fb) {
 				case 0:
 					raiz->fb = 1;
@@ -55,14 +30,11 @@ arvore adicionar (int valor, arvore raiz, int *cresceu) {
 					break;
 				case 1:
 					*cresceu = 0;
-					//raiz->fb = 2;                             ----
-                    //o fator de balanço passaria ao valor 2,
 					return rotacionar(raiz);
 			}
 		}
 
 	} else {
-       //Elemento menor que raiz relativa, fazer o caso simétrico
 	   raiz->esq = adicionar(valor,raiz->esq,cresceu);
 	   if(*cresceu){
 		   switch(raiz->fb){
@@ -71,7 +43,6 @@ arvore adicionar (int valor, arvore raiz, int *cresceu) {
 					*cresceu = 1;
 					break;
 			   case -1:
-			   		//raiz->fb = -2;
 					*cresceu = 0;
 					return rotacionar(raiz);
 					break;
@@ -83,24 +54,15 @@ arvore adicionar (int valor, arvore raiz, int *cresceu) {
 		   }
 	   }
 	}
-    //Se tirar isso, caga a árvore toda
 	return raiz;
 }
 
 /*----------
 Verifica o tipo de rotação que deve ser aplicado para reajustar a árvore
-Parâmetros:
-    raiz - pivô (ou raiz da sub-árvore que se encontra 
-    com o |fb| = 2 ) 
-Retorno:
-    raiz da sub-árvore resultante
 ---*/
 arvore rotacionar(arvore raiz) {
-    //fb maior que zero => rotação esquerda
 	if(raiz->fb > 0) {
 		switch(raiz->dir->fb) {
-            //o zero "conta" como rotação simples. 
-            //Só ocorre no remover
 			case 0:
 			case 1:
 				return rotacao_simples_esquerda(raiz);
@@ -108,21 +70,16 @@ arvore rotacionar(arvore raiz) {
 				return rotacao_dupla_esquerda(raiz);					
 			} 
 	} else {
-    //implementar o simétrico
 		switch(raiz->esq->fb){
 			case 0:
 			case -1:
-				return rotacao_simples_direita(raiz); //falta implementar
+				return rotacao_simples_direita(raiz);
 			case 1:
 				return rotacao_dupla_direita(raiz);
 		}
 	}
 }
 
-/*----------
-Só está implementada a "base" do remover da BST.
-Incluir a variável de controle "diminuir" similar a "cresceu do adicionar.
-------*/
 arvore remover (int valor, arvore raiz,int *diminuiu) {
 	if(raiz == NULL){
 		return NULL;
@@ -225,9 +182,7 @@ arvore remover (int valor, arvore raiz,int *diminuiu) {
 }
 
 /*-------
-Realiza a rotação simples esquerda sobre o pivô "raiz" e 
-retorna a raiz relativa da árvore resultante 
-
+rotação simples esquerda 
       p
      / \
     t1  u
@@ -257,8 +212,6 @@ arvore rotacao_simples_esquerda(arvore raiz) {
     //Atualiza os ponteiros
 	u->esq = p;
 	p->dir = t2;
-	/*u->dir = t1;
-	p->dir = t1;*/
     
     //Atualiza os fatores de balanço de acordo com o fb de u
     //Esses valores vieram dos cálculos demonstrados na aula
@@ -312,7 +265,6 @@ arvore rotacao_simples_direita(arvore raiz) {
 	//atualiza ponteiros
 	u->dir = p;
 	p->esq = t2;
-	//falta atualizar FB
 	if(u->fb == -1) {
 		p->fb = 0;
 		u->fb = 0;
@@ -350,10 +302,8 @@ arvore rotacao_dupla_direita(arvore raiz) {
 	return v;
 }
 
-
-
 /*---
-Imprime a árvore de modo a facilitar a visualização da estrutura, incluindo também o fator de balanço.
+Imprime a árvore ,incluindo também o fator de balanço.
 ---*/
 void imprimir(arvore raiz) {
 	printf("(");
@@ -371,12 +321,6 @@ Auxiliar de imprimir
 void imprimir_elemento(arvore raiz) {
 	printf("%d [%d]", raiz->dado, raiz->fb);
 }
-
-
-
-
-
-
 int altura(arvore raiz) {
 	if(raiz == NULL) {
 		return 0;
